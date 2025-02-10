@@ -4,7 +4,12 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from myapp import db
+from myapp import db, login
+
+
+@login.user_loader
+def load_user(id):
+    return db.session.get(User, int(id))
 
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
